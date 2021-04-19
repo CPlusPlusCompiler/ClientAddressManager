@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ClientAddressManager.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,8 +10,6 @@ namespace ClientAddressManager
 {
     public static class ImportUtil<T>
     {
-        public const string ERROR_READ_FILE = "Įvyko klaida atidarant failą";
-        public const string ERROR_PARSE_JSON = "Įvyko klaida nuskaitant duomenis iš failo. Įsitikinkite, kad jo duomenys yra teisingi";
 
         /// <summary>
         /// 
@@ -24,11 +23,11 @@ namespace ClientAddressManager
 
             var json = GetJsonFromFile(filePath);
             if (json == null)
-                return new Result<List<T>>(ResultCode.ERROR, default(List<T>), ERROR_READ_FILE); 
+                return new Result<List<T>>(ResultCode.ERROR, default, Strings.ERROR_READ_FILE); 
 
             var objects = DeserializeJson(json);
             if (objects == null)
-                return new Result<List<T>>(ResultCode.ERROR, default(List<T>), ERROR_PARSE_JSON);
+                return new Result<List<T>>(ResultCode.ERROR, default, Strings.ERROR_PARSE_JSON);
 
             var result = new Result<List<T>>(ResultCode.SUCCESS, objects, null);
             return result;

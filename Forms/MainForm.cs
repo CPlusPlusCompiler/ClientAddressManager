@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClientAddressManager.Utils;
+using System;
 using System.Windows.Forms;
 
 
@@ -37,9 +38,19 @@ namespace ClientAddressManager
         }
 
 
-        private void OnUpdatePostCodesClicked()
+        private async void OnUpdatePostCodesClicked()
         {
+            var result = await viewModel.UpdatePostIndexes();
 
+            if(result.Code == ResultCode.ERROR)
+            {
+                MessageBox.Show(result.Error, Strings.ERROR_OCCURED, MessageBoxButtons.OK); 
+            }
+            else
+            {
+                var message = "Atnaujinti " + result.Data + " pašto kodai.";
+                MessageBox.Show(message, Strings.SUCCESS_OPERATION, MessageBoxButtons.OK); 
+            }
         }
 
 
@@ -52,15 +63,9 @@ namespace ClientAddressManager
                 return;
 
             if(models.Code == ResultCode.ERROR)
-            {
-                var message = models.Error ?? "Nežinoma klaida";
-                var buttons = MessageBoxButtons.OK;
-                MessageBox.Show(message, "", buttons);
-            }
+                MessageBox.Show(models.Error, Strings.ERROR_OCCURED, MessageBoxButtons.OK);
             else
-            {
-                viewModel.SetData(models.Data);
-            }
+                viewModel.SetDataAsync(models.Data);
         }
     }
 

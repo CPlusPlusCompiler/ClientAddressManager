@@ -4,6 +4,7 @@ using System.Text;
 
 namespace ClientAddressManager
 {
+
     /// <summary>
     /// A simple wrapper for returning a result that can be either data or an error message
     /// </summary>
