@@ -47,6 +47,9 @@ namespace ClientAddressManager.Models.DataSources
 
             var codesResponse = JsonConvert.DeserializeObject<PostltResponse>(jsonStr);
 
+            if (!codesResponse.success)
+                return new Result<string>(ResultCode.ERROR, default, codesResponse.message);
+
             if (codesResponse.data.Count == 0)
                 return new Result<string>(ResultCode.ERROR, default, Strings.ERROR_ADDRESS_NOT_FOUND);
 
